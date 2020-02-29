@@ -289,7 +289,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在接口自动化测试的道路上，有几个工具非常好用，比如老牌强劲的性能测试工具 Jmeter，风格清新脱俗的 Postman，还有新晋之星 Postwomen，当然也少不了直接使用代码来做接口自动化测试的，比如 Python，JavaScript 都可以，但是能在满足我对编码的兴趣和方便快速的写测试脚本的需求的话，我还是喜欢 Jmeter，特别是在学习探索到一些很好用的用法之后，我更摆脱不了 Jmeter，加上 Jmeter 中也能使用脚本语言 Groovy 、Python 来辅助断言，也能让我体验下用脚本语言编写代码的舒畅。</p>
+        <p>在接口自动化测试的道路上，有几个工具非常好用，比如老牌强劲的性能测试工具 Jmeter，风格清新脱俗的 Postman，还有新晋之星 Postwomen，当然也少不了直接使用代码来做接口自动化测试的，比如 Python，JavaScript 都可以，但是能在满足我对编码的兴趣和方便快速的写测试脚本的需求的话，我还是喜欢 Jmeter，特别是在学习探索到一些很好用的用法之后，我更摆脱不了 Jmeter，加上 Jmeter 中也能使用脚本语言 Groovy 、Python 来辅助断言，也能让我体验下用脚本语言编写代码的舒畅。</p><a id="more"></a>
 <p>使用 Jmeter 过程中，少不了提取变量值进行后续接口的复用，其中我用的最得心应手的便是 JsonExtractor，这在最新的 Jmeter 版本中已经是集成了的，有些非常老旧的版本还需要额外安装插件才能使用相同的功能，本文主要介绍 JsonExtractor 及其 Jsonway JsonPathí 的语法用法，并结合使用经历记录一些有用的用法。</p>
 <h4 id="JsonExtractor-介绍"><a href="#JsonExtractor-介绍" class="headerlink" title="JsonExtractor 介绍"></a>JsonExtractor 介绍</h4><h5 id="如何添加-JsonExtractor"><a href="#如何添加-JsonExtractor" class="headerlink" title="如何添加 JsonExtractor"></a>如何添加 JsonExtractor</h5><p>添加 JsonExtractor 的位置如下所示，属于一个后置处理器，Json Extractor 使用的是 Jsonway 的语法规则进行参数的提取，通常情况下是放在一个 HTTP 请求下面作为后置处理器提取相应的参数值。</p>
 <p><img src="https://i.loli.net/2020/02/28/R2oHgUSIsDjXMNq.png" alt="json-extractor-loc.png"></p>
