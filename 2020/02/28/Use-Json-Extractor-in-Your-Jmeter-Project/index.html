@@ -29,12 +29,12 @@
     version: '7.4.0',
     exturl: false,
     sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
+    mediumzoom: true,
+    lazyload: true,
     pangu: false,
     algolia: {
       appID: '',
@@ -63,18 +63,10 @@
 <meta property="og:site_name" content="Willijk&#39;s Madness">
 <meta property="og:description" content="在接口自动化测试的道路上，有几个工具非常好用，比如老牌强劲的性能测试工具 Jmeter，风格清新脱俗的 Postman，还有新晋之星 Postwomen，当然也少不了直接使用代码来做接口自动化测试的，比如 Python，JavaScript 都可以，但是能在满足我对编码的兴趣和方便快速的写测试脚本的需求的话，我还是喜欢 Jmeter，特别是在学习探索到一些很好用的用法之后，我更摆脱不了 Jmete">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://i.loli.net/2020/02/28/R2oHgUSIsDjXMNq.png">
-<meta property="og:image" content="https://i.loli.net/2020/02/28/T7FlUXfjRcNChsB.png">
-<meta property="og:image" content="https://i.loli.net/2020/02/28/bFAgO9eIkD4s8cT.png">
-<meta property="og:image" content="https://i.loli.net/2020/02/28/s2AF8yzGZixe93J.png">
-<meta property="og:image" content="https://i.loli.net/2020/02/29/5A7D2XrWgzKwqNi.png">
-<meta property="og:image" content="https://i.loli.net/2020/02/28/zTbMmtoFLY8f45g.png">
-<meta property="og:image" content="https://i.loli.net/2020/02/28/ctxEGSDUhnyIRzm.png">
-<meta property="og:updated_time" content="2020-02-28T17:02:50.015Z">
+<meta property="og:updated_time" content="2020-03-01T02:31:38.012Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Use Json Extractor in Your Jmeter Project">
 <meta name="twitter:description" content="在接口自动化测试的道路上，有几个工具非常好用，比如老牌强劲的性能测试工具 Jmeter，风格清新脱俗的 Postman，还有新晋之星 Postwomen，当然也少不了直接使用代码来做接口自动化测试的，比如 Python，JavaScript 都可以，但是能在满足我对编码的兴趣和方便快速的写测试脚本的需求的话，我还是喜欢 Jmeter，特别是在学习探索到一些很好用的用法之后，我更摆脱不了 Jmete">
-<meta name="twitter:image" content="https://i.loli.net/2020/02/28/R2oHgUSIsDjXMNq.png">
   <link rel="canonical" href="http://www.willijk.xyz/2020/02/28/Use-Json-Extractor-in-Your-Jmeter-Project/">
 
 
@@ -244,7 +236,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-29 01:02:50" itemprop="dateModified" datetime="2020-02-29T01:02:50+08:00">2020-02-29</time>
+                <time title="Modified: 2020-03-01 10:31:38" itemprop="dateModified" datetime="2020-03-01T10:31:38+08:00">2020-03-01</time>
               </span>
             
           
@@ -292,7 +284,7 @@
         <p>在接口自动化测试的道路上，有几个工具非常好用，比如老牌强劲的性能测试工具 Jmeter，风格清新脱俗的 Postman，还有新晋之星 Postwomen，当然也少不了直接使用代码来做接口自动化测试的，比如 Python，JavaScript 都可以，但是能在满足我对编码的兴趣和方便快速的写测试脚本的需求的话，我还是喜欢 Jmeter，特别是在学习探索到一些很好用的用法之后，我更摆脱不了 Jmeter，加上 Jmeter 中也能使用脚本语言 Groovy 、Python 来辅助断言，也能让我体验下用脚本语言编写代码的舒畅。</p><a id="more"></a>
 <p>使用 Jmeter 过程中，少不了提取变量值进行后续接口的复用，其中我用的最得心应手的便是 JsonExtractor，这在最新的 Jmeter 版本中已经是集成了的，有些非常老旧的版本还需要额外安装插件才能使用相同的功能，本文主要介绍 JsonExtractor 及其 Jsonway JsonPathí 的语法用法，并结合使用经历记录一些有用的用法。</p>
 <h4 id="JsonExtractor-介绍"><a href="#JsonExtractor-介绍" class="headerlink" title="JsonExtractor 介绍"></a>JsonExtractor 介绍</h4><h5 id="如何添加-JsonExtractor"><a href="#如何添加-JsonExtractor" class="headerlink" title="如何添加 JsonExtractor"></a>如何添加 JsonExtractor</h5><p>添加 JsonExtractor 的位置如下所示，属于一个后置处理器，Json Extractor 使用的是 Jsonway 的语法规则进行参数的提取，通常情况下是放在一个 HTTP 请求下面作为后置处理器提取相应的参数值。</p>
-<p><img src="https://i.loli.net/2020/02/28/R2oHgUSIsDjXMNq.png" alt="json-extractor-loc.png"></p>
+<p><img alt="json-extractor-loc.png" data-src="https://i.loli.net/2020/02/28/R2oHgUSIsDjXMNq.png"></p>
 <ul>
 <li>Variables Names: 提取的变量名，可以同时输出多个变量，以分号<code>;</code>隔开即可</li>
 <li>JSON Path Expressions: 从 json 格式返回数据中提取值的 Jsonway 表达式</li>
@@ -367,23 +359,23 @@
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"msg"</span>:<span class="string">"success"</span>,</span><br><span class="line">  <span class="attr">"code"</span>:<span class="string">"000000"</span>,</span><br><span class="line">  <span class="attr">"data"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">"item_name"</span>: <span class="string">"willik"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="attr">"item_name"</span>: <span class="string">"dolores"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="attr">"item_name"</span>: <span class="string">"wiona"</span></span><br><span class="line">    &#125;</span><br><span class="line">    ......</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>那么调用了该查询列表的查询请求之后可以使用如下的 JsonExtractor 进行 id 的提取并封装，这里有两个注意的点，就是圈红的地方，一个是 Match No 需要填为 -1，表示提取所有符合条件的值，而 0 则表示随机选取一个，其他数字只是按顺序取一个；另外一个地方就是勾选自动连接符 Compute concatenation var ，这样就会自动将多个符合条件的值用逗号连接。</p>
-<p><img src="https://i.loli.net/2020/02/28/T7FlUXfjRcNChsB.png" alt="image.png"></p>
+<p><img alt="image.png" data-src="https://i.loli.net/2020/02/28/T7FlUXfjRcNChsB.png"></p>
 <p>使用该 JsonExtractor 后的效果如下：<br>可以在其他请求中使用 ${ids_1}、${ids_ALL}、${ids_matchNr} 来使用这些变量，可以很方便的实现具有前后逻辑依赖关系的自动化测试脚本编写</p>
-<p><img src="https://i.loli.net/2020/02/28/bFAgO9eIkD4s8cT.png" alt="image.png"></p>
+<p><img alt="image.png" data-src="https://i.loli.net/2020/02/28/bFAgO9eIkD4s8cT.png"></p>
 <h6 id="2-通过循环调用创建接口进行id参数封装"><a href="#2-通过循环调用创建接口进行id参数封装" class="headerlink" title="2.通过循环调用创建接口进行id参数封装"></a>2.通过循环调用创建接口进行id参数封装</h6><p>这种办法需要使用 LoopController （循环控制器）、Counter （计数器）、以及 JSR223 PreProcessor 前置处理器写 Groovy 脚本来达到目的，虽然比上面的方法麻烦一点，但是可以在 Groovy 脚本中自定义的封装的部分参数，而不是全部 id 都进行提取，具体的结构如下图所示：<br>在 JsonExtractor 中提取单个id的值，再需要使用拼接参数的请求中添加 JSR223 Preprocessor 使用 Groovy 来进行多个id参数组合封装</p>
-<p><img src="https://i.loli.net/2020/02/28/s2AF8yzGZixe93J.png" alt="image.png"></p>
+<p><img alt="image.png" data-src="https://i.loli.net/2020/02/28/s2AF8yzGZixe93J.png"></p>
 <p>首先需要创建接口调用成功后返回该对象的id，这样才能进行提取。假设创建接口的返回值如下所示，则各个结构的参数设置如下：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"msg"</span>: <span class="string">"success"</span>,</span><br><span class="line">  <span class="attr">"code"</span>: <span class="string">"000000"</span>,</span><br><span class="line">  <span class="attr">"data"</span>: &#123;</span><br><span class="line">    <span class="attr">"id"</span>: <span class="string">"123456789"</span>,</span><br><span class="line">    <span class="attr">"item_name"</span>: <span class="string">"willijk"</span>,</span><br><span class="line">    <span class="attr">"description"</span>: <span class="string">"This is a Apple"</span></span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://i.loli.net/2020/02/29/5A7D2XrWgzKwqNi.png" alt="image.png"></p>
+<p><img alt="image.png" data-src="https://i.loli.net/2020/02/29/5A7D2XrWgzKwqNi.png"></p>
 <p>在 Groovy 中写合并参数的代码如下，就能在接口中使用参数 ${ids} 作为一个批量的参数传入了</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vars 为 Jmeter 中的内置变量</span></span><br><span class="line"><span class="comment">// loop_count 为在 User Defined Parameters 中定义的值</span></span><br><span class="line"><span class="keyword">def</span> loop_count = vars.get(<span class="string">'loop_count'</span>)</span><br><span class="line"><span class="keyword">def</span> ids = <span class="string">''</span></span><br><span class="line"><span class="keyword">def</span> id = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;= loop_count;i++)&#123;</span><br><span class="line">	id = vars.get(<span class="string">'id_'</span> + i)</span><br><span class="line">	ids = ids + id + <span class="string">','</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//截取掉最后一个逗号</span></span><br><span class="line">ids = ids[<span class="number">0.</span>.<span class="number">-2</span>]</span><br><span class="line"></span><br><span class="line">vars.putObject(<span class="string">'ids'</span>,ids)</span><br></pre></td></tr></table></figure>
 
 <p>当然也可以在 LoopController 中直接加 JSR223 PostProcessor 后置处理器提取并合并，并简化掉 JsonExtractor（JsonExtractor 可以用也可以不用，在JSR223  中也可以获取到请求的返回数据结果并进行提取），这样就不用在每个使用到合并参数的请求中都添加一次 JSR223 前置处理器来处理参数拼接，代码就变成如下样子：</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不使用 JsonExtrctor 版本</span></span><br><span class="line"><span class="comment">// vars 为 Jmeter 内置变量</span></span><br><span class="line"><span class="keyword">import</span> JsonSlurper</span><br><span class="line"><span class="comment">//获取请求的返回结果并转化成 json 对象</span></span><br><span class="line"><span class="keyword">def</span> res = <span class="keyword">new</span> JsonSlurper().parseText(prev. getResponseDataAsString())</span><br><span class="line"><span class="comment">// ids为在 User Defined Parameters 中定义的值，其中 ids 为空字符串</span></span><br><span class="line"><span class="keyword">def</span> ids = vars.get(<span class="string">'ids'</span>)</span><br><span class="line"><span class="keyword">def</span> id = res.data.id + <span class="string">','</span></span><br><span class="line"><span class="comment">//拼接参数值</span></span><br><span class="line">ids += id</span><br><span class="line"><span class="comment">// 会发现这种判断写法其实很睿智，但是不转化成 int 值比较的话总会错误判断</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">new</span> Integer(vars.get(<span class="string">'loop_count'</span>)).intValue() == <span class="keyword">new</span> Integer(vars.get(<span class="string">'idx'</span>)).intValue()) &#123;</span><br><span class="line">  <span class="comment">//截取掉多余的逗号</span></span><br><span class="line">  ids = ids[<span class="number">0.</span>.<span class="number">-2</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vars.putObject(<span class="string">'ids'</span>,ids)</span><br></pre></td></tr></table></figure>
 
-<h4 id="其他辅助调试的办法"><a href="#其他辅助调试的办法" class="headerlink" title="其他辅助调试的办法"></a>其他辅助调试的办法</h4><h5 id="使用-Debug-PostProcessor"><a href="#使用-Debug-PostProcessor" class="headerlink" title="使用 Debug PostProcessor"></a>使用 Debug PostProcessor</h5><p>使用 DebugProcessor 可以很方便的看出运行过程中存储了那些内置变量以及其对应的值<br><img src="https://i.loli.net/2020/02/28/zTbMmtoFLY8f45g.png" alt="image.png"></p>
-<h5 id="使用-LogViewer"><a href="#使用-LogViewer" class="headerlink" title="使用 LogViewer"></a>使用 LogViewer</h5><p>在脚本中使用 <code>log.warn(string)</code>、<code>log.info(string)</code>、<code>log.debug(string)</code> 都可以将内容打印到 LogViewer 中方便调试脚本<br><img src="https://i.loli.net/2020/02/28/ctxEGSDUhnyIRzm.png" alt="image.png"></p>
+<h4 id="其他辅助调试的办法"><a href="#其他辅助调试的办法" class="headerlink" title="其他辅助调试的办法"></a>其他辅助调试的办法</h4><h5 id="使用-Debug-PostProcessor"><a href="#使用-Debug-PostProcessor" class="headerlink" title="使用 Debug PostProcessor"></a>使用 Debug PostProcessor</h5><p>使用 DebugProcessor 可以很方便的看出运行过程中存储了那些内置变量以及其对应的值<br><img alt="image.png" data-src="https://i.loli.net/2020/02/28/zTbMmtoFLY8f45g.png"></p>
+<h5 id="使用-LogViewer"><a href="#使用-LogViewer" class="headerlink" title="使用 LogViewer"></a>使用 LogViewer</h5><p>在脚本中使用 <code>log.warn(string)</code>、<code>log.info(string)</code>、<code>log.debug(string)</code> 都可以将内容打印到 LogViewer 中方便调试脚本<br><img alt="image.png" data-src="https://i.loli.net/2020/02/28/ctxEGSDUhnyIRzm.png"></p>
 
     </div>
 
@@ -399,7 +391,9 @@
           
           <div class="post-tags">
             
-              <a href="/tags/Jmeter-接口自动化测试/" rel="tag"># Jmeter,接口自动化测试</a>
+              <a href="/tags/Jmeter/" rel="tag"># Jmeter</a>
+            
+              <a href="/tags/接口自动化测试/" rel="tag"># 接口自动化测试</a>
             
           </div>
         
@@ -477,7 +471,7 @@
       
       <div class="site-state-item site-state-tags">
         
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">tags</span>
         
       </div>
@@ -514,11 +508,6 @@
     </span>
     <span title="Reading time total">4 mins.</span>
 </div>
-<!--
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.0</div>
--->
 
         
 <div class="busuanzi-count">
@@ -562,10 +551,12 @@
 
     
   
-  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='80' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
   <script src="/lib/anime.min.js?v=3.1.0"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
 <script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
 <script src="/js/schemes/pisces.js?v=7.4.0"></script>
 
