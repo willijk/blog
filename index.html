@@ -195,6 +195,116 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://www.willijk.xyz/2020/03/06/Use-JSR223-Assertion-While-Test-QUERY-API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Willijk">
+      <meta itemprop="description" content="不正规测试人员<br> To see the world<br> things dangerous to come to<br> to see behind walls<br> to draw closer<br> to find each other and to feel<br> That is the purpose of LIFE">
+      <meta itemprop="image" content="/images/astronaut.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Willijk's Madness">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2020/03/06/Use-JSR223-Assertion-While-Test-QUERY-API/" class="post-title-link" itemprop="url">使用 JSR223 断言器自动化断言查询类接口 API</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-03-06 21:37:45" itemprop="dateCreated datePublished" datetime="2020-03-06T21:37:45+08:00">2020-03-06</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-07 00:22:26" itemprop="dateModified" datetime="2020-03-07T00:22:26+08:00">2020-03-07</time>
+              </span>
+            
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span>2.9k</span>
+            </span>
+          
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span>3 mins.</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="为什么使用-JSR223-断言器"><a href="#为什么使用-JSR223-断言器" class="headerlink" title="为什么使用 JSR223 断言器"></a>为什么使用 JSR223 断言器</h4><p>一般接口自动化测试如果只是单纯的 HTTP 类的接口，就只有 CRUD 四类接口的测试，使用 Jmeter 的自己提供的断言器来对付完全绰绰有余。针对这四类接口个人经验一般只用两种断言器就可以完成这四类接口的自动化断言，对于新增（POST）和更新（PATCH），我一般使用简单的 Response Assertion 来筛选其中返回的 Json 字符串数据与传入的对不对即可，当然为了区分，我会使用一个 Json Assertion 来简单粗暴的提取一个返回码，然后其他的业务数据在 Response Assertion 中一个字段一个字段的判断，也可以针对每个字段都使用一个 Json Assertion 来断言，同时保证了返回数据的 Json 数据结构是正确的，但是针对部分接口返回字段很多，一个字段手动添加一个 Json Assertion 字段实在是有点费时费力，后续还是考虑自动化生成类似脚本好点，感觉像是一个悖论，用另外一种自动化来支持一种自动化。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2020/03/06/Use-JSR223-Assertion-While-Test-QUERY-API/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="http://www.willijk.xyz/2020/02/28/Use-Json-Extractor-in-Your-Jmeter-Project/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -349,7 +459,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -388,12 +498,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="Symbols count total">4k</span>
+    <span title="Symbols count total">7k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4 mins.</span>
+    <span title="Reading time total">8 mins.</span>
 </div>
 
         
