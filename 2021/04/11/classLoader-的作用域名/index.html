@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32x32.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon-32x32.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="用 Java 获取文件，最简单最直接最经常使用的就是使用 Java 的 File 类，比如想要获取 C:/willijk.txt 这个文件，就会使用 File file = new File(&amp;quot;C:/willijk.txt&amp;quot;) 这样的全路径硬编码，这种写法在测试时还是蛮有用的，但是一旦发布上线，有时就会令人头疼，不同系统的兼容，路径找不到等奇葩问题，而且良好的编码习惯就是把代码">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 文件获取有感">
+<meta property="og:url" content="http://www.willijk.xyz/2021/04/11/classLoader-的作用域名/index.html">
+<meta property="og:site_name" content="Willijk&#39;s Madness">
+<meta property="og:description" content="用 Java 获取文件，最简单最直接最经常使用的就是使用 Java 的 File 类，比如想要获取 C:/willijk.txt 这个文件，就会使用 File file = new File(&amp;quot;C:/willijk.txt&amp;quot;) 这样的全路径硬编码，这种写法在测试时还是蛮有用的，但是一旦发布上线，有时就会令人头疼，不同系统的兼容，路径找不到等奇葩问题，而且良好的编码习惯就是把代码">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-04-11T10:38:09.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 文件获取有感">
+<meta name="twitter:description" content="用 Java 获取文件，最简单最直接最经常使用的就是使用 Java 的 File 类，比如想要获取 C:/willijk.txt 这个文件，就会使用 File file = new File(&amp;quot;C:/willijk.txt&amp;quot;) 这样的全路径硬编码，这种写法在测试时还是蛮有用的，但是一旦发布上线，有时就会令人头疼，不同系统的兼容，路径找不到等奇葩问题，而且良好的编码习惯就是把代码">
+  <link rel="canonical" href="http://www.willijk.xyz/2021/04/11/classLoader-的作用域名/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Java 文件获取有感 | Willijk's Madness</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Willijk's Madness</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://www.willijk.xyz/2021/04/11/classLoader-的作用域名/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Willijk">
+      <meta itemprop="description" content="不正规测试人员<br> To see the world<br> things dangerous to come to<br> to see behind walls<br> to draw closer<br> to find each other and to feel<br> That is the purpose of LIFE">
+      <meta itemprop="image" content="/images/astronaut.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Willijk's Madness">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Java 文件获取有感
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2021-04-11 09:50:55 / Modified: 18:38:09" itemprop="dateCreated datePublished" datetime="2021-04-11T09:50:55+08:00">2021-04-11</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span>4.8k</span>
+            </span>
+          
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span>5 mins.</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>用 Java 获取文件，最简单最直接最经常使用的就是使用 Java 的 File 类，比如想要获取 C:/willijk.txt 这个文件，就会使用 <code>File file = new File(&quot;C:/willijk.txt&quot;)</code> 这样的全路径硬编码，这种写法在测试时还是蛮有用的，但是一旦发布上线，有时就会令人头疼，不同系统的兼容，路径找不到等奇葩问题，而且良好的编码习惯就是把代码写成艺术，这样的硬编码可是艺术，所以个人还是比较偏向与相对路径的写法。</p><a id="more"></a>
+<p>在获取路径中比较好的使用方法就是 <code>Class.getResource(String path), Class.getResourceAsStream(String path)</code> 这两个方法，其实还有一个，就是 <code>Class.getClassLoader.getResourceAsStream(String path)</code>但是我一直理解不了，最近有时间了，就来好好理解一下。</p>
+<p>假设我们有如下的文件目录：<br>以下工程为一个 gradle 项目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">├── main</span><br><span class="line">│   ├── java</span><br><span class="line">│   │   ├── file2.txt</span><br><span class="line">│   │   └── xyz</span><br><span class="line">│   │       ├── Test.java</span><br><span class="line">│   │       └── file1.txt</span><br><span class="line">│   └── resources</span><br><span class="line">│       ├── file3.txt</span><br><span class="line">│       └── xyz</span><br><span class="line">│           └── file4.txt</span><br><span class="line">└── test</span><br><span class="line">    ├── java</span><br><span class="line">    └── resources</span><br></pre></td></tr></table></figure>
+
+<p>编译后得到的 class 文件目录为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">├── classes</span><br><span class="line">│   └── java</span><br><span class="line">│       └── main</span><br><span class="line">│           ├── file2.txt</span><br><span class="line">│           └── xyz</span><br><span class="line">│               ├── Test.class</span><br><span class="line">│               └── file1.txt</span><br><span class="line">├── resources</span><br><span class="line">│   └── main</span><br><span class="line">│       ├── file3.txt</span><br><span class="line">│       └── xyz</span><br><span class="line">│           └── file4.txt</span><br></pre></td></tr></table></figure>
+
+<p>以下代码均写在 Test.java 文件中</p>
+<h5 id="getResourceAsStream"><a href="#getResourceAsStream" class="headerlink" title="getResourceAsStream"></a>getResourceAsStream</h5><p>class.getResourceAsStream() 有两种用法，一种是以 <code>/</code> 开头的，一种是不以 <code>/</code> 开头的，不以 <code>/</code> 开头时默认是从此类所在的包下取资源，以 <code>/</code> 开头则是从 ClassPath 根下获取，其只通过 path 构造一个绝对路径，最终还是由 ClassLoader 获取资源。 class.getResourceAsStream 指定要加载的资源路径与当前类所在包的路径一致</p>
+<ol>
+<li><p>如何读取 file1.txt </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// path = "file1.txt"</span></span><br><span class="line">BufferedReader reader1 = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(Test.class.getResourceAsStream(<span class="string">"file1.txt"</span>)));</span><br><span class="line">System.out.println(<span class="string">"file1 =&gt; "</span> + reader1.readLine());</span><br><span class="line"><span class="comment">//output</span></span><br><span class="line"><span class="comment">// file1 =&gt; this is file1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何读取 file2.txt</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// path = "../file2.txt"</span></span><br><span class="line">BufferedReader reader2 = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(Test.class.getResourceAsStream(<span class="string">"../file2.txt"</span>)));</span><br><span class="line">System.out.println(<span class="string">"file2 =&gt; "</span> + reader2.readLine());</span><br><span class="line"><span class="comment">// output</span></span><br><span class="line"><span class="comment">// file2 =&gt; this is file 2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何读取 file3.txt</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// path = "/file3.txt"</span></span><br><span class="line">BufferedReader reader3 = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(Test.class.getResourceAsStream(<span class="string">"/file3.txt"</span>)));</span><br><span class="line">System.out.println(<span class="string">"file3 =&gt; "</span> + reader3.readLine());</span><br><span class="line"><span class="comment">// output</span></span><br><span class="line"><span class="comment">// file3 =&gt; this is file 3</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何读取 file4.txt</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// path = "/xyz/file4.txt"</span></span><br><span class="line">BufferedReader reader4 = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(Test.class.getResourceAsStream(<span class="string">"/xyz/file4.txt"</span>)));</span><br><span class="line">System.out.println(<span class="string">"file4 =&gt; "</span> + reader4.readLine());</span><br><span class="line"><span class="comment">// output</span></span><br><span class="line"><span class="comment">// file4 =&gt; this is file 4</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="getResource"><a href="#getResource" class="headerlink" title="getResource"></a>getResource</h5><p>getResource 和 getResourceAsStream 是类似的用法，都是有以 <code>/</code> 开头的区分，只不过 getresourceAsStream 直接返回了一个 stream, 而 getResource 还需要再手动包一层，返回的是一个 URL 对象，通过 URL 对象的 getFile() 方法可以获取到文件在系统中绝对路径，如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Test.class.getResource(<span class="string">"file1.txt"</span>).getFile());</span><br><span class="line">System.out.println(Test.class.getResource(<span class="string">"../file2.txt"</span>).getFile());</span><br><span class="line">System.out.println(Test.class.getResource(<span class="string">"/file3.txt"</span>).getFile());</span><br><span class="line">System.out.println(Test.class.getResource(<span class="string">"/xyz/file1.txt"</span>).getFile());</span><br><span class="line"><span class="comment">// output</span></span><br><span class="line"><span class="comment">//  /Users/willijk/workspace/tmp/helloworld/build/classes/java/main/xyz/file1.txt</span></span><br><span class="line"><span class="comment">//  /Users/willijk/workspace/tmp/helloworld/build/classes/java/main/file2.txt</span></span><br><span class="line"><span class="comment">//  /Users/willijk/workspace/tmp/helloworld/build/resources/main/file3.txt</span></span><br><span class="line"><span class="comment">//  /Users/willijk/workspace/tmp/helloworld/build/classes/java/main/xyz/file1.txt</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Classloader"><a href="#Classloader" class="headerlink" title="Classloader"></a>Classloader</h5><p>除了直接通过获取 class 文件中读取文件，还可以先通过 getClassLoader 后再来读取对应的文件，getClassLoader 只会读取 classpath 下的文件，通过 classloader 读取文件不管是 getResource 还是 getResourceAsStream ，默认是从 classpath 根下获取，不能以 / 开头，否则文件获取不到。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Test.class.getClassLoader().getResource(<span class="string">"file3.txt"</span>).getFile());</span><br><span class="line"><span class="comment">// output: /Users/willijk/workspace/tmp/helloworld/build/resources/main/file3.txt</span></span><br><span class="line">System.out.println(Test.class.getClassLoader().getResource(<span class="string">"xyz/file4.txt"</span>).getFile());</span><br><span class="line"><span class="comment">// output: /Users/willijk/workspace/tmp/helloworld/build/resources/main/xyz/file4.txt</span></span><br><span class="line">System.out.println(Test.class.getClassLoader().getResource(<span class="string">"/file3.txt"</span>).getFile());</span><br><span class="line"><span class="comment">// output: NullPointerException</span></span><br><span class="line">System.out.println(Test.class.getClassLoader().getResource(<span class="string">""</span>).getFile());</span><br><span class="line"><span class="comment">// output: /Users/willijk/workspace/tmp/helloworld/build/classes/java/main/, 工程目录</span></span><br><span class="line">System.out.println(Test.class.getClassLoader().getResource(<span class="string">"file2.txt"</span>).getFile());</span><br><span class="line"><span class="comment">// output: /Users/willijk/workspace/tmp/helloworld/build/classes/java/main/file2.txt</span></span><br><span class="line">System.out.println(Test.class.getClassLoader().getResource(<span class="string">"xyz/file1.txt"</span>).getFile());</span><br><span class="line"><span class="comment">// output: /Users/willijk/workspace/tmp/helloworld/build/classes/java/main/xyz/file1.txt</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BufferedReader r1 = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(Test.class.getClassLoader().getResourceAsStream(<span class="string">"xyz/file1.txt"</span>)));</span><br><span class="line">System.out.println(r1.readLine());</span><br><span class="line"><span class="comment">// output： this is file 1</span></span><br><span class="line"></span><br><span class="line">BufferedReader r2 = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(Test.class.getClassLoader().getResourceAsStream(<span class="string">"file2.txt"</span>)));</span><br><span class="line">System.out.println(r2.readLine());</span><br><span class="line"><span class="comment">//output： this is file 2</span></span><br><span class="line"></span><br><span class="line">BufferedReader r3 = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(Test.class.getClassLoader().getResourceAsStream(<span class="string">"file3.txt"</span>)));</span><br><span class="line">System.out.println(r3.readLine());</span><br><span class="line"><span class="comment">//output： this is file 3</span></span><br><span class="line"></span><br><span class="line">BufferedReader r4 = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(Test.class.getClassLoader().getResourceAsStream(<span class="string">"xyzfile4.txt"</span>)));</span><br><span class="line">System.out.println(r4.readLine());</span><br><span class="line"><span class="comment">//output： this is file 4</span></span><br><span class="line"></span><br><span class="line">BufferedReader r5= <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(Test.class.getClassLoader().getResourceAsStream(<span class="string">"/xyz/file1.txt"</span>)));</span><br><span class="line">System.out.println(<span class="number">5</span>.readLine());</span><br><span class="line"><span class="comment">//output： NPE</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Java 中一定有 3 中类加载器<ol>
+<li>Bootstrap Classloader</li>
+<li>Extension Classloader</li>
+<li>System Classloader</li>
+</ol>
+</li>
+</ul>
+<p>最后总结，如果想要读取文件，得以 class 文件为出发着手点，不能以 java 文件为着手点，因为最后使用的就是编译过后的 class 文件。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Java/" rel="tag"># Java</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2021/02/22/算法之滑动窗口法/" rel="next" title="算法之滑动窗口法">
+                  <i class="fa fa-chevron-left"></i> 算法之滑动窗口法
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#getResourceAsStream"><span class="nav-number">1.</span> <span class="nav-text">getResourceAsStream</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#getResource"><span class="nav-number">2.</span> <span class="nav-text">getResource</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Classloader"><span class="nav-number">3.</span> <span class="nav-text">Classloader</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/astronaut.jpg"
+      alt="Willijk">
+  <p class="site-author-name" itemprop="name">Willijk</p>
+  <div class="site-description" itemprop="description">不正规测试人员<br> To see the world<br> things dangerous to come to<br> to see behind walls<br> to draw closer<br> to find each other and to feel<br> That is the purpose of LIFE</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Willijk</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="Symbols count total">14k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">15 mins.</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='80' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+  <script>
+  (function() {
+    window.addEventListener('DOMContentLoaded', () => {
+      let script = document.createElement('script');
+      script.src = '/lib/three/three.min.js';
+      document.body.appendChild(script);
+    });
+    let styles = ['', '', ''];
+    window.addEventListener('load', () => {
+      styles.forEach(item => {
+        if (item !== '') {
+          let script = document.createElement('script');
+          script.src = item;
+          document.body.appendChild(script);
+        }
+      });
+    });
+  })();
+  </script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left","hOffset":260,"vOffset":-20},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
