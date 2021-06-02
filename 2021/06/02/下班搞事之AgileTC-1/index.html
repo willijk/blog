@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-32x32.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/favicon-32x32.png?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: true,
+    lazyload: true,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="无厘头的前言最近测试工作干的属实无聊，想搞静态分析，无奈压在肩上的永远是业务测试，现在公司内部的测试用例管理简直垃圾，内部系统的测试用例管理功能简直无法用，也不投入人员进行开发优化，👴🤮💩，这都什么年代了，还想让我用 excel、erp 那套表格管理测试用例，简直让人头大。我想搞点大事情，刚好最近学习了一波 React，看看能不能找点东西实践一下😁，不废话，我就想做个在线的 xmind 来">
+<meta name="keywords" content="下班搞事">
+<meta property="og:type" content="article">
+<meta property="og:title" content="下班搞事之AgileTC(1)">
+<meta property="og:url" content="http://www.willijk.xyz/2021/06/02/下班搞事之AgileTC-1/index.html">
+<meta property="og:site_name" content="Willijk&#39;s Madness">
+<meta property="og:description" content="无厘头的前言最近测试工作干的属实无聊，想搞静态分析，无奈压在肩上的永远是业务测试，现在公司内部的测试用例管理简直垃圾，内部系统的测试用例管理功能简直无法用，也不投入人员进行开发优化，👴🤮💩，这都什么年代了，还想让我用 excel、erp 那套表格管理测试用例，简直让人头大。我想搞点大事情，刚好最近学习了一波 React，看看能不能找点东西实践一下😁，不废话，我就想做个在线的 xmind 来">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-06-02T16:16:51.975Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="下班搞事之AgileTC(1)">
+<meta name="twitter:description" content="无厘头的前言最近测试工作干的属实无聊，想搞静态分析，无奈压在肩上的永远是业务测试，现在公司内部的测试用例管理简直垃圾，内部系统的测试用例管理功能简直无法用，也不投入人员进行开发优化，👴🤮💩，这都什么年代了，还想让我用 excel、erp 那套表格管理测试用例，简直让人头大。我想搞点大事情，刚好最近学习了一波 React，看看能不能找点东西实践一下😁，不废话，我就想做个在线的 xmind 来">
+  <link rel="canonical" href="http://www.willijk.xyz/2021/06/02/下班搞事之AgileTC-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>下班搞事之AgileTC(1) | Willijk's Madness</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Willijk's Madness</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://www.willijk.xyz/2021/06/02/下班搞事之AgileTC-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Willijk">
+      <meta itemprop="description" content="不正规测试人员<br> To see the world<br> things dangerous to come to<br> to see behind walls<br> to draw closer<br> to find each other and to feel<br> That is the purpose of LIFE">
+      <meta itemprop="image" content="/images/astronaut.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Willijk's Madness">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">下班搞事之AgileTC(1)
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2021-06-02 22:42:22" itemprop="dateCreated datePublished" datetime="2021-06-02T22:42:22+08:00">2021-06-02</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-03 00:16:51" itemprop="dateModified" datetime="2021-06-03T00:16:51+08:00">2021-06-03</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span>2k</span>
+            </span>
+          
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span>2 mins.</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="无厘头的前言"><a href="#无厘头的前言" class="headerlink" title="无厘头的前言"></a>无厘头的前言</h3><p>最近测试工作干的属实无聊，想搞静态分析，无奈压在肩上的永远是业务测试，现在公司内部的测试用例管理简直垃圾，内部系统的测试用例管理功能简直无法用，也不投入人员进行开发优化，👴🤮💩，这都什么年代了，还想让我用 excel、erp 那套表格管理测试用例，简直让人头大。我想搞点大事情，刚好最近学习了一波 React，看看能不能找点东西实践一下😁，不废话，我就想做个在线的 xmind 来管理测试用例，最好能牛逼如百度脑图。调研了一下测试用例的管理在业界中有什么优秀的做法，没想到小🍊科技开源了一个系统 <a href="https://github.com/didi/AgileTC" target="_blank" rel="noopener">AgileTC</a>，agile 是敏捷的意思，先下载下来玩玩看有多敏捷。</p><a id="more"></a>
+<p>捋一下我自己的需求点</p>
+<ul>
+<li>在线脑图</li>
+<li>支持多人协作</li>
+<li>直观的展示测试用例</li>
+</ul>
+<p>这一看前端文件，又有 dva，package.json 中又有 umi build，还得去学学这两样东西，这要不要这么卷，我选择躺平…干活</p>
+<h3 id="开干！先跑起来"><a href="#开干！先跑起来" class="headerlink" title="开干！先跑起来"></a>开干！先跑起来</h3><p>下载完代码，配置好数据库了，以为 run 起来就能用了，结果进不了，登陆跳转了一个 null 的路由，我以为那里配置错误，看了一下代码，发现有个 jumpto 参数，我首次进来怎么会有 jumpto 参数呢，粗略的看了一下前端路由配置后，才随机进入一个页面，后来发现回到首页其实已经是登陆态了，好吧，可以进去了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 登陆注册成功后跳了个空参数，这是个bug！！！</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.state.type === <span class="string">'1'</span>) &#123;</span><br><span class="line">  <span class="comment">// 登录</span></span><br><span class="line">  request(<span class="string">`/user/login`</span>, &#123;</span><br><span class="line">    method: <span class="string">'POST'</span>,</span><br><span class="line">    body: &#123; ...value &#125;,</span><br><span class="line">  &#125;).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (res &amp;&amp; res.code === <span class="number">200</span>) &#123;</span><br><span class="line">      message.success(<span class="string">'登陆成功'</span>)</span><br><span class="line">      <span class="built_in">window</span>.location.href = utils.getQueryString(<span class="string">'jumpto'</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      message.error(res.msg)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123; <span class="attr">loading</span>: <span class="literal">false</span> &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// 注册</span></span><br><span class="line">  request(<span class="string">`/user/register`</span>, &#123;</span><br><span class="line">    method: <span class="string">'POST'</span>,</span><br><span class="line">    body: &#123; ...value &#125;,</span><br><span class="line">  &#125;).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (res &amp;&amp; res.code === <span class="number">200</span>) &#123;</span><br><span class="line">      message.success(<span class="string">'注册成功'</span>)</span><br><span class="line">      <span class="built_in">window</span>.location.href = utils.getQueryString(<span class="string">'jumpto'</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      message.error(res.msg)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.setState(&#123; <span class="attr">loading</span>: <span class="literal">false</span> &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好了，先去学一波umi再来开干</p>
+<h3 id="错误排查"><a href="#错误排查" class="headerlink" title="错误排查"></a>错误排查</h3><ol>
+<li>npm install 安装依赖报错</li>
+</ol>
+<p>不会是版本不兼容吧，所有的编程错误中，我最烦就是这种版本不兼容的错误了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">➜  web git:(master) ✗ npm install</span><br><span class="line">npm ERR! code ERESOLVE</span><br><span class="line">npm ERR! ERESOLVE unable to resolve dependency tree</span><br><span class="line">npm ERR! </span><br><span class="line">npm ERR! While resolving: <span class="literal">undefined</span>@<span class="literal">undefined</span></span><br><span class="line">npm ERR! Found: react@<span class="number">16.14</span><span class="number">.0</span></span><br><span class="line">npm ERR! node_modules/react</span><br><span class="line">npm ERR!   react@<span class="string">"^16.8.6"</span> <span class="keyword">from</span> the root project</span><br><span class="line">npm ERR! </span><br><span class="line">npm ERR! Could not resolve dependency:</span><br><span class="line">npm ERR! peer react@<span class="string">"^16.18.4"</span> <span class="keyword">from</span> dva@<span class="number">2.6</span><span class="number">.0</span>-beta<span class="number">.6</span></span><br><span class="line">npm ERR! node_modules/dva</span><br><span class="line">npm ERR!   dva@<span class="string">"2.6.0-beta.6"</span> <span class="keyword">from</span> the root project</span><br><span class="line">npm ERR! </span><br><span class="line">npm ERR! Fix the upstream dependency conflict, or retry</span><br><span class="line">npm ERR! <span class="keyword">this</span> command <span class="keyword">with</span> --force, or --legacy-peer-deps</span><br><span class="line">npm ERR! to accept an incorrect (and potentially broken) dependency resolution.</span><br><span class="line">npm ERR! </span><br><span class="line">npm ERR! See /Users/willijk/.npm/eresolve-report.txt <span class="keyword">for</span> a full report.</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>gyp: No Xcode or CLT version detected!</li>
+<li></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/下班搞事/" rel="tag"># 下班搞事</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2021/04/11/Java如何优雅的获取文件路径/" rel="next" title="Java 如何优雅的获取文件路径">
+                  <i class="fa fa-chevron-left"></i> Java 如何优雅的获取文件路径
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#无厘头的前言"><span class="nav-number">1.</span> <span class="nav-text">无厘头的前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开干！先跑起来"><span class="nav-number">2.</span> <span class="nav-text">开干！先跑起来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错误排查"><span class="nav-number">3.</span> <span class="nav-text">错误排查</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/astronaut.jpg"
+      alt="Willijk">
+  <p class="site-author-name" itemprop="name">Willijk</p>
+  <div class="site-description" itemprop="description">不正规测试人员<br> To see the world<br> things dangerous to come to<br> to see behind walls<br> to draw closer<br> to find each other and to feel<br> That is the purpose of LIFE</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Willijk</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="Symbols count total">16k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">17 mins.</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+    
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='80' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+  <script>
+  (function() {
+    window.addEventListener('DOMContentLoaded', () => {
+      let script = document.createElement('script');
+      script.src = '/lib/three/three.min.js';
+      document.body.appendChild(script);
+    });
+    let styles = ['', '', ''];
+    window.addEventListener('load', () => {
+      styles.forEach(item => {
+        if (item !== '') {
+          let script = document.createElement('script');
+          script.src = item;
+          document.body.appendChild(script);
+        }
+      });
+    });
+  })();
+  </script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"left","hOffset":260,"vOffset":-20},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
